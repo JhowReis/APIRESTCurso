@@ -1,4 +1,4 @@
-package jonathan.rest;
+package jonathan.test;
 
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
