@@ -14,11 +14,18 @@ public class UserXMLTest {
 			.get("https://restapi.wcaquino.me/usersXML/3")
 		.then()
 			.statusCode(200)
-			.body("user.name", is("Ana Julia"))
-			.body("user.@id", is("3"))
-			.body("user.filhos.name.size()", is(2))
-			.body("user.filhos.name[0]", is("Zezinho"))
-			.body("user.filhos.name[1]", is("Luizinho"))
+			.rootPath("user")
+			.body("name", is("Ana Julia"))
+			.body("@id", is("3"))
+			
+			.rootPath("user.filhos")
+			.body("name.size()", is(2))
+
+			.detachRootPath("filhos")
+			.body("filhos.name[0]", is("Zezinho"))
+			
+			.appendRootPath("filhos")
+			.body("name[1]", is("Luizinho"))
 		;
 	}
 
