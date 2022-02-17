@@ -1,8 +1,20 @@
 package jonathan.test;
 
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -124,6 +136,23 @@ public class UserJsonTest {
 		.body("salary.findAll{it != null}.sum()", allOf(greaterThan(3000d), lessThan(5000d)))
 		
 		;		
+	}
+	
+	@Test
+	public void devoUnirJsonPathComJAVA() {
+		ArrayList<String> names =  
+			given()
+			.when()
+			.get("https://restapi.wcaquino.me/users")
+			.then()
+			.statusCode(200)
+			.body("$", hasSize(3))
+			.extract().path("name.findAll{it.startsWith('Maria')}")
+			
+			;	
+		Assert.assertEquals(1, names.size());
+		Assert.assertTrue(names.get(0).equalsIgnoreCase("maria joaquina"));
+		Assert.assertEquals(names.get(0).toUpperCase(),"maria joaquina".toUpperCase());
 	}
 	
 
