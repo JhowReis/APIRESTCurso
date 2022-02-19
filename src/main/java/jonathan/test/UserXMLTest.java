@@ -7,17 +7,34 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import io.restassured.RestAssured;
 import io.restassured.internal.path.xml.NodeImpl;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 
 public class UserXMLTest {
 	
+	@BeforeClass
+	public static void setup() {
+		RestAssured.baseURI = "https://restapi.wcaquino.me";
+		RestAssured.port = 443;
+//		RestAssured.basePath = "/v2";
+		
+	}
+	
+	
+	
+	
 	@Test
 	public void devoTrabalharComXML() {
-		given()
+
+		
+		given() 
+			.log().all()
 		.when()
-			.get("https://restapi.wcaquino.me/usersXML/3")
+			.get("/usersXML/3")
+//			.get("https://restapi.wcaquino.me/usersXML/3
 		.then()
 			.statusCode(200)
 			.rootPath("user")
@@ -40,7 +57,7 @@ public class UserXMLTest {
 	public void devoFazerPesquisasAvançadasComXML() {
 		given()
 		.when()
-			.get("https://restapi.wcaquino.me/usersXML")
+			.get("/usersXML")
 		.then()
 			.statusCode(200)
 			.body("users.user.size()", is(3))
@@ -56,7 +73,7 @@ public class UserXMLTest {
 		
 		ArrayList<NodeImpl> nomes = given()
 		.when()
-		.get("https://restapi.wcaquino.me/usersXML")
+		.get("/usersXML")
 		.then()
 		.statusCode(200)
 		.extract().path("users.user.name.findAll{it.toString().contains('n')}")
@@ -71,7 +88,7 @@ public class UserXMLTest {
 		
 		 given()
 		.when()
-			.get("https://restapi.wcaquino.me/usersXML")
+			.get("/usersXML")
 		.then()
 			.statusCode(200)
 			.body(hasXPath("count(/users/user)", is("3")))
