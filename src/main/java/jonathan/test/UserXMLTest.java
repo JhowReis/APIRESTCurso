@@ -3,7 +3,13 @@ package jonathan.test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
+
+import io.restassured.internal.path.xml.NodeImpl;
+
+import org.junit.Assert;
 
 public class UserXMLTest {
 	
@@ -43,6 +49,21 @@ public class UserXMLTest {
 			.body("users.user.find{it.age ==  25}.name", is("Maria Joaquina"))
 			.body("users.user.findAll{it.name.toString().contains('n')}.name", hasItems("Maria Joaquina", "Ana Julia") )
 		;
+	}
+	
+	@Test
+	public void devoFazerPesquisasAvançadasComXMLEJAVA() {
+		
+		ArrayList<NodeImpl> nomes = given()
+		.when()
+		.get("https://restapi.wcaquino.me/usersXML")
+		.then()
+		.statusCode(200)
+		.extract().path("users.user.name.findAll{it.toString().startsWith('Maria')}")
+		
+		;
+		Assert.assertEquals("Maria Joaquina".toUpperCase(), nomes.get(0).toString().toUpperCase());
+		Assert.assertTrue("ANA JULIA".equalsIgnoreCase(nomes.get(1).toString()));
 	}
   
 }
