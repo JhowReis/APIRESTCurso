@@ -59,11 +59,36 @@ public class UserXMLTest {
 		.get("https://restapi.wcaquino.me/usersXML")
 		.then()
 		.statusCode(200)
-		.extract().path("users.user.name.findAll{it.toString().startsWith('Maria')}")
+		.extract().path("users.user.name.findAll{it.toString().contains('n')}")
 		
 		;
 		Assert.assertEquals("Maria Joaquina".toUpperCase(), nomes.get(0).toString().toUpperCase());
 		Assert.assertTrue("ANA JULIA".equalsIgnoreCase(nomes.get(1).toString()));
 	}
+	
+	@Test
+	public void devoFazerPesquisasAvançadasComXPATH() {
+		
+		 given()
+		.when()
+			.get("https://restapi.wcaquino.me/usersXML")
+		.then()
+			.statusCode(200)
+			.body(hasXPath("count(/users/user)", is("3")))
+			.body(hasXPath("/users/user[@id='1']"))
+			.body(hasXPath("//user[@id='1']"))
+			.body(hasXPath("//name[text() = 'Luizinho']/../../name", is("Ana Julia")))
+			.body(hasXPath("//name[text() = 'Ana Julia']/following-sibling::filhos",allOf(containsString("Zezinho"), containsString("Luizinho"))))
+			.body(hasXPath("/users/user/name", is("João da Silva")))
+			.body(hasXPath("//name", is("João da Silva")))
+			.body(hasXPath("/users/user[2]/name", is("Maria Joaquina")))
+			.body(hasXPath("/users/user[last()]/name", is("Ana Julia")))
+			.body(hasXPath("count(/users/user/name[contains(., 'n')])", is("2")))
+			.body(hasXPath("//user[age < 24]/name", is("Ana Julia")))
+			.body(hasXPath("//user[age > 20 and age < 30]/name", is("Maria Joaquina")))
+			.body(hasXPath("//user[age > 20][age < 30]/name", is("Maria Joaquina")))
+		;
+	}
+	
   
 }
