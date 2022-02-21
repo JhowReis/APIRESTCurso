@@ -41,6 +41,24 @@ public class VerbosTest {
 	;
 		
 	}
+	
+	@Test
+	public void deveAlterarUsuario() {
+		given()
+			.contentType("application/json")
+			.log().all()
+			.body("{\"name\": \"Jonathan alterado\", \"age\": 50}")
+		.when()
+			.put("https://restapi.wcaquino.me/users/1")
+		.then()
+			.log().all()
+			.statusCode(200)
+			.body("name", is("Jonathan alterado"))
+			.body("age", is(50))
+	
+		
+		;
+	}
 }
 
 
