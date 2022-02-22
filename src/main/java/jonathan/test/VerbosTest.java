@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class VerbosTest {
@@ -70,6 +71,27 @@ public class VerbosTest {
 		.body("age", is(35))
 		
 		;
+	}
+	@Test
+	public void deveDeserializarObjetoAoSalvarUsuarioUsandoObjeto() {
+		User user = new User("Usuário deserializado", 35);
+		
+		User usuarioInserido = given()
+		.contentType("application/json")
+		.log().all()
+		.body(user)
+		.when()
+		.post("https://restapi.wcaquino.me/users")
+		.then()
+		.log().all()
+		.statusCode(201)
+		.extract().body().as(User.class)
+		;
+		System.out.println(usuarioInserido);
+		
+		Assert.assertThat(usuarioInserido.getId(), notNullValue());
+		Assert.assertEquals("Usuário deserializado", usuarioInserido.getName());
+		Assert.assertThat(usuarioInserido.getAge(), is(35));
 	}
 	
 	@Test
