@@ -1,7 +1,12 @@
 package jonathan.test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -21,6 +26,48 @@ public class VerbosTest {
 			.body("id", is(notNullValue()))
 			.body("name", is("Jonathan"))
 			.body("age", is(28))
+		
+		;
+	}
+	
+	@Test
+	public void deveSalvarUsuarioUsandoMap() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", "José");
+		params.put("age", 55);
+		
+		given()
+		.contentType("application/json")
+		.log().all()
+		.body(params)
+		.when()
+		.post("https://restapi.wcaquino.me/users")
+		.then()
+		.log().all()
+		.statusCode(201)
+		.body("id", is(notNullValue()))
+		.body("name", is("José"))
+		.body("age", is(55))
+		
+		;
+	}
+	
+	@Test
+	public void deveSalvarUsuarioUsandoObjeto() {
+		User user = new User("Usuário via Objeto", 35);
+			
+		given()
+		.contentType("application/json")
+		.log().all()
+		.body(user)
+		.when()
+		.post("https://restapi.wcaquino.me/users")
+		.then()
+		.log().all()
+		.statusCode(201)
+		.body("id", is(notNullValue()))
+		.body("name", is("Usuário via Objeto"))
+		.body("age", is(35))
 		
 		;
 	}
