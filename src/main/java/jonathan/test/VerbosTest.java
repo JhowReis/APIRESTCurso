@@ -59,6 +59,82 @@ public class VerbosTest {
 		
 		;
 	}
+	
+	@Test
+	public void deveCustomizarURL() {
+		given()
+		.contentType("application/json")
+		.log().all()
+		.body("{\"name\": \"Jonathan alterado\", \"age\": 50}")
+		.when()
+		.put("https://restapi.wcaquino.me/{entidade}/{userId}", "users", "1")
+		.then()
+		.log().all()
+		.statusCode(200)
+		.body("name", is("Jonathan alterado"))
+		.body("age", is(50))
+		
+		
+		;
+	}
+	
+	@Test
+	public void deveCustomizarURLparte2() {
+		given()
+		.contentType("application/json")
+		.log().all()
+		.pathParam("entidade", "users")
+		.pathParam("userId", 1)
+		.body("{\"name\": \"Jonathan alterado\", \"age\": 50}")
+		.when()
+		.put("https://restapi.wcaquino.me/{entidade}/{userId}", "users", "1")
+		.then()
+		.log().all()
+		.statusCode(200)
+		.body("name", is("Jonathan alterado"))
+		.body("age", is(50))
+		
+		
+		;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
