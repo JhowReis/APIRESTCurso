@@ -101,7 +101,7 @@ public class VerbosTest {
 			.log().all()
 			.body("{\"age\": 28}")
 		.when()
-			.post("https://restapi.wcaquino.me/users")
+			.post("?")
 		.then()
 			.log().all()
 			.statusCode(400)
