@@ -23,5 +23,21 @@ public class EnvioDadoTest {
 		;
 		
 	}
+	
+	@Test
+	public void deveEnviarValorViaParametroQuery() {
+		given()
+		.log().all()
+		.queryParam("format", "xml")
+		.when()
+		.get("https://restapi.wcaquino.me/v2/users")
+		.then()
+		.log().all()
+		.statusCode(200)
+		.contentType(ContentType.XML)
+		
+		;
+		
+	}
 
 }
