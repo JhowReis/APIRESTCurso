@@ -14,6 +14,7 @@ public class HelloWorld {
 		System.out.println(response.statusCode() == 200);
 		
 		 ValidatableResponse validacao = response.then();
-		 validacao.statusCode(200);
+		 validacao.statusCode(201);
 	}
 }
+

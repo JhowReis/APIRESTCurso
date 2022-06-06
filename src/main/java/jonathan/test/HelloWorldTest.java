@@ -36,6 +36,10 @@ public class HelloWorldTest {
 		Response response = request(Method.GET, "https://restapi.wcaquino.me/ola");
 		Assert.assertTrue(response.getBody().asString().equals("Ola Mundo!"));
 		Assert.assertTrue(response.statusCode() == 200);
+		Assert.assertTrue("O STATUS CODE DEVE SER 200",response.statusCode() == 200);
+		
+		//Amelhor solução é:::
+		Assert.assertEquals(200, response.statusCode());
 
 		ValidatableResponse validacao = response.then();
 		validacao.statusCode(200);
@@ -44,10 +48,13 @@ public class HelloWorldTest {
 	@Test
 	public void outrasFormarRestAssured() {
 		Response response = request(Method.GET, "https://restapi.wcaquino.me/ola");
-
 		ValidatableResponse validacao = response.then();
 		validacao.statusCode(200);
+		
+		//forma rapida
 		get("https://restapi.wcaquino.me/ola").then().statusCode(200);
+		
+		//Modo fluente
 		
 		given()//pré condições
 		.when()//Ações
