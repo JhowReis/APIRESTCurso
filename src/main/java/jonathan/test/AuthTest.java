@@ -40,6 +40,6 @@ public class AuthTest {
 	}
 	
 	
-	// 1d54ac0d1793b95a2868d7bde8db584e   https://api.openweathermap.org/data/2.5/weather?q=Recife,BR&appid=1d54ac0d1793b95a2868d7bde8db584e&units=metric
+
 
 }
