@@ -3,7 +3,12 @@ package jonathan.test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
+
+import io.restassured.http.ContentType;
 
 public class AuthTest {
 
@@ -91,6 +96,41 @@ public class AuthTest {
 		;
 	}
 	
+	@Test
+	public void deveFazerAutenticacaoComTokenJWT() {
+		Map<String, String> login = new HashMap<String, String>();
+		login.put("email", "jonathan.linkedin2019@gmail.com");
+		login.put("senha", "jhowjhow2");
+		
+		//LOGIN NA API
+		//Receber o token
+		String token = given()
+			.log().all()
+			.body(login)
+			.contentType(ContentType.JSON)
+		.when()
+			.post("https://barrigarest.wcaquino.me/signin")
+		.then()
+			.log().all()
+			.statusCode(200)
+			.extract().path("token")
+		;
+		
+		//Obter as contas
+		given()
+			.log().all()
+			.header("Authorization", "JWT " + token)
+		.when()
+			.get("https://barrigarest.wcaquino.me/contas")
+		.then()
+			.log().all()
+			.statusCode(200)
+			.body("nome", hasItem("Conta para alterar"));
+
+
+	;
+		
+	}
 	
 
 
